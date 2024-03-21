@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV['DB_USERNAME'] || 'user' %> # デフォルト値をdocker-compose.ymlで設定した値に合わせる
+  password: <%= ENV['DB_PASSWORD'] || 'password' %> # デフォルト値をdocker-compose.ymlで設定した値に合わせる
+  host: <%= ENV['DB_HOST'] || 'db' %> # docker-compose.ymlで設定したサービス名
+
+development:
+  <<: *default
+  database: rails7_template_development
+
+test:
+  <<: *default
+  database: rails7_template_test
+
+production:
+  <<: *default
+  database: rails7_template_production
+  username: <%= ENV["RAILS7_TEMPLATE_DATABASE_USERNAME"] %> # 環境変数から取得
+  password: <%= ENV["RAILS7_TEMPLATE_DATABASE_PASSWORD"] %> # 環境変数から取得
