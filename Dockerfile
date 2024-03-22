@@ -23,7 +23,8 @@ RUN apt-get update -qq && \
 # Install application gems
 # Note: In development, it might be more efficient to mount the Gemfile and install gems directly in the container
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
+RUN bundle config set --local frozen false && \
+    bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
