@@ -8,6 +8,12 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: myapp_development
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
   web:
     build: .
     command: bin/dev
@@ -18,10 +24,12 @@ services:
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgresql://user:password@db/myapp_development
+      REDIS_URL: redis://redis:6379/0
     depends_on:
       - db
+      - redis
     stdin_open: true
     tty: true
-
 volumes:
   postgres_data:
+  redis_data:
